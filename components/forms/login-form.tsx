@@ -61,6 +61,7 @@ export default function UserAuthForm() {
     }
     router.push("/dashboard");
     setLoading(false);
+    router.refresh();
   };
 
   return (

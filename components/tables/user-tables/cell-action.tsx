@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/constants/data";
+import { setUser } from "@/redux/slices/user.slice";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,20 +23,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const toggle = () => setIsModalOpen((prev) => !prev);
-
-  const onConfirm = async () => {};
+  const [userData, setUserData] = useState<User | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
 
   return (
     <>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
-        loading={loading}
-      />
+      {!!userId && (
+        <AlertModal
+          isOpen={!!userId}
+          onClose={() => setUserId(null)}
+          loading={loading}
+          id={userId}
+        />
+      )}
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -46,18 +46,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => toggle()}>
+          <DropdownMenuItem onClick={() => setUserData(data)}>
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
+          <DropdownMenuItem onClick={() => setUserId(data.id)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {isModalOpen && (
+      {!!userData && (
         <AddNewUserModal
-          isOpen={isModalOpen}
-          toggleModal={toggle}
+          isOpen={!!userData}
+          toggleModal={() => setUserData(null)}
+          data={userData}
           clasName="max-w-[80vw]"
         />
       )}

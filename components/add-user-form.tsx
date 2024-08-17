@@ -13,13 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Popover, PopoverContent } from "./ui/popover";
-import { PopoverTrigger } from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
+
 import {
   Select,
   SelectContent,
@@ -27,6 +24,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { User } from "@/types/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import UserApis from "@/services/users-api";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   first_name: z.string().min(1, { message: "Please enter your first name" }),
@@ -46,11 +48,16 @@ const formSchema = z.object({
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
+
 type Iprops = {
   toggleModal: () => void;
   className?: string;
+  data?: User | null;
 };
-export default function AddUserForm({ className, toggleModal }: Iprops) {
+export default function AddUserForm({ className, toggleModal, data }: Iprops) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const [loading, setLoading] = useState(false);
   const defaultValues = {
     email: "",
@@ -61,9 +68,51 @@ export default function AddUserForm({ className, toggleModal }: Iprops) {
     defaultValues,
   });
 
-  const onSubmit = async (data: UserFormValue) => {
-    console.log(data);
+  // Add User Mutation
+  const addUserMutation = useMutation({
+    mutationFn: async (input: UserFormValue) => {
+      return new UserApis().createUserApi(input);
+    },
+    onSuccess: () => {
+      toast.success("User added successfully");
+      toggleModal();
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Failed to add user");
+    },
+  });
+
+  // Edit User Mutation
+  const editUserMutation = useMutation({
+    mutationFn: async (input: UserFormValue) => {
+      if (data?.id) {
+        return new UserApis().editUserByIdApi(data.id, input);
+      }
+    },
+    onSuccess: () => {
+      toast.success("User updated successfully");
+      toggleModal();
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Failed to update user");
+    },
+  });
+
+  const onSubmit = async (input: UserFormValue) => {
+    if (data) {
+      // Edit operation
+      editUserMutation.mutate(input);
+    } else {
+      // Add new user operation
+      addUserMutation.mutate(input);
+    }
   };
+
+  useEffect(() => {
+    form.reset(data);
+  }, [data]);
 
   return (
     <>

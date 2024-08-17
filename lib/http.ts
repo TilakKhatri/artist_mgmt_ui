@@ -17,11 +17,11 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     const token = getToken();
-    // console.log('token',token);
+    // console.log("token", token);
     if (token) {
-      config.headers["Authorization"] = `${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
-    console.log("Request Config:", config); // Debugging line
+    // console.log("Request Config:", config); // Debugging line
     return config;
   },
   (error) => {

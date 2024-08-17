@@ -1,23 +1,65 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
 import { DataTable } from "../../ui/data-table";
-import { columns } from "./columns";
 import { User } from "@/constants/data";
 import { useState } from "react";
 import AddNewUserModal from "@/components/model/add-user-modal";
+import { CellAction } from "./cell-action";
+import { ColumnDef } from "@tanstack/react-table";
 
-interface ProductsClientProps {
-  data: User[];
+interface IProps {
+  currentPage: number;
+  limit: number;
+  totalPages: number;
+  totalUsers: number;
+  users: [User];
 }
 
-export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
+export const UserClient = ({ data }: { data: IProps }) => {
+  const page = data.currentPage;
+  const totalUsers = data.totalUsers;
+  const pageCount = Math.ceil(totalUsers / data.limit);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const toggle = () => setIsModalOpen((prev) => !prev);
+
+  const columns: ColumnDef<User>[] = [
+    {
+      accessorKey: "first_name",
+      header: "firstname",
+    },
+    {
+      accessorKey: "last_name",
+      header: "lastname",
+    },
+    {
+      accessorKey: "email",
+      header: "email",
+    },
+    {
+      accessorKey: "phone",
+      header: "phone",
+    },
+    {
+      accessorKey: "address",
+      header: "address",
+    },
+    {
+      accessorKey: "dob",
+      header: "dob",
+    },
+    {
+      accessorKey: "gender",
+      header: "gender",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => <CellAction data={row.original} />,
+    },
+  ];
 
   return (
     <>
@@ -31,7 +73,14 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data} />
+      <DataTable
+        searchKey="name"
+        pageNo={page}
+        columns={columns}
+        totalUsers={totalUsers}
+        pageCount={pageCount}
+        data={data.users}
+      />
       {isModalOpen && (
         <AddNewUserModal
           isOpen={isModalOpen}

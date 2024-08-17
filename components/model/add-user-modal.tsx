@@ -1,3 +1,4 @@
+import { User } from "@/types/user";
 import AddUserForm from "../add-user-form";
 import { Modal } from "../ui/modal";
 
@@ -5,16 +6,18 @@ type Iprops = {
   isOpen: boolean;
   toggleModal: () => void;
   clasName?: string;
+  data: User | null;
 };
 
 export default function AddNewUserModal({
   isOpen,
   toggleModal,
   clasName,
+  data,
 }: Iprops) {
   return (
     <Modal
-      title="Add New User"
+      title={!data ? "Add New User" : "Update user details "}
       description=""
       isOpen={isOpen}
       onClose={toggleModal}
@@ -25,7 +28,7 @@ export default function AddNewUserModal({
           className="p-1 rounded-full h-fit cursor-pointer bg-neutral-50"
         ></div>
       </div>
-      <AddUserForm className="mt-4" toggleModal={toggleModal} />
+      <AddUserForm className="mt-4" toggleModal={toggleModal} data={data} />
     </Modal>
   );
 }

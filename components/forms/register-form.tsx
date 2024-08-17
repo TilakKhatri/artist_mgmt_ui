@@ -55,6 +55,7 @@ export default function UserRegistrationForm() {
     }
     router.push("/");
     setLoading(false);
+    router.refresh();
   };
 
   return (
