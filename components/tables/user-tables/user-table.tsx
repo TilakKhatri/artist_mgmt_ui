@@ -15,7 +15,6 @@ interface ProductsClientProps {
 }
 
 export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
-  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const toggle = () => setIsModalOpen((prev) => !prev);

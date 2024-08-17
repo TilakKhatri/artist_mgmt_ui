@@ -9,36 +9,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import UseAuth from "@/hooks/useAuth";
+import http from "@/lib/http";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as z from "zod";
 
 const formSchema = z.object({
-  //   firstName: z.string().min(1, { message: "Please enter your first name" }),
-  //   lastName: z.string().min(1, { message: "Please enter your last name" }),
+  username: z.string().min(1, { message: "Please enter your username" }),
+
   email: z.string().email({ message: "Enter a valid email address" }),
   password: z
     .string()
     .min(8, { message: "Password must contain 8 characters" }),
-  //   phone: z.string().optional(),
-  //   address: z.string().optional(),
-  //   gender: z.enum(["m", "f", "o"], {
-  //     errorMap: () => ({ message: "Please select a gender" }),
-  //   }),
-  //   dob: z.string().refine((date) => !isNaN(Date.parse(date))),
-  //   isAdmin: z.boolean().default(false),
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserRegistrationForm() {
-  const searchParams = useSearchParams();
+  const { registerApiCall } = new UseAuth();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const defaultValues = {
+    username: "",
     email: "",
     password: "",
   };
@@ -48,7 +46,15 @@ export default function UserRegistrationForm() {
   });
 
   const onSubmit = async (data: UserFormValue) => {
-    console.log(data);
+    setLoading(true);
+    const response = await registerApiCall(data);
+
+    if (response) {
+      console.log("Registered successfully:", response);
+      toast.success("Account created successfully");
+    }
+    router.push("/");
+    setLoading(false);
   };
 
   return (
@@ -58,16 +64,16 @@ export default function UserRegistrationForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full space-y-2"
         >
-          {/* <FormField
+          <FormField
             control={form.control}
-            name="firstName"
+            name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder="Enter your first name"
+                    placeholder="Enter your username"
                     disabled={loading}
                     {...field}
                   />
@@ -75,7 +81,7 @@ export default function UserRegistrationForm() {
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -112,7 +118,12 @@ export default function UserRegistrationForm() {
               </FormItem>
             )}
           />
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button
+            disabled={loading}
+            variant="primary"
+            className="ml-auto w-full"
+            type="submit"
+          >
             Register
           </Button>
         </form>

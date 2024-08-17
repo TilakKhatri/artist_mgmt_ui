@@ -30,3 +30,10 @@ export interface FooterItem {
 export type MainNavItem = NavItemWithOptionalChildren;
 
 export type SidebarNavItem = NavItemWithChildren;
+
+export interface IError {
+  type: string;
+  status_code: number;
+  message: string;
+  result: any[];
+}

@@ -1,18 +1,23 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 import Header from "@/components/layout/header";
 import Sidebar from "@/components/layout/sidebar";
 // import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Admin dashboard",
-  description: "Admin dashboard for artist management system",
-};
+import { useSelector } from "react-redux";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const { user, loginStatus } = useSelector((state: any) => state.user);
+  if (!loginStatus) {
+    router.push(`/`);
+  }
   return (
     <div className="flex">
       <Sidebar />

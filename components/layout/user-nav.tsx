@@ -10,12 +10,20 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { signOut, useSession } from 'next-auth/react';
+import { resetLogin } from "@/redux/slices/user.slice";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+
 export function UserNav() {
+  const router = useRouter();
+  const { user } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
   function signOut() {
-    console.log("signout");
+    dispatch(resetLogin());
+    toast.success("Log out...");
+    router.replace("/");
   }
-  //   const { data: session } = useSession();
   const session = true;
   if (session) {
     return (
@@ -24,12 +32,7 @@ export function UserNav() {
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-              {/* <AvatarImage
-                src={session.user?.image ?? ""}
-                alt={session.user?.name ?? ""}
-              /> */}
-              {/* <AvatarFallback>{session.user?.name?.[0]}</AvatarFallback> */}
+              <AvatarFallback>{user?.username}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -37,19 +40,16 @@ export function UserNav() {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
-                {/* {session.user?.name} */}
+                {user?.username}
               </p>
               <p className="text-xs leading-none text-muted-foreground">
-                {/* {session.user?.email} */}
+                {user?.email}
               </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => signOut()}>
-            Log out
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );

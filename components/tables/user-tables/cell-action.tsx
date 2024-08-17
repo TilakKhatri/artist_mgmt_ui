@@ -1,4 +1,5 @@
 "use client";
+import AddNewUserModal from "@/components/model/add-user-modal";
 import { AlertModal } from "@/components/model/alert-model";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +22,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const toggle = () => setIsModalOpen((prev) => !prev);
 
   const onConfirm = async () => {};
 
@@ -42,9 +46,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/user/${data.id}`)}
-          >
+          <DropdownMenuItem onClick={() => toggle()}>
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
@@ -52,6 +54,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {isModalOpen && (
+        <AddNewUserModal
+          isOpen={isModalOpen}
+          toggleModal={toggle}
+          clasName="max-w-[80vw]"
+        />
+      )}
     </>
   );
 };

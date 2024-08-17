@@ -9,13 +9,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
 
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { setLogin } from "@/redux/slices/user.slice";
+import UseAuth from "@/hooks/useAuth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Enter a valid email address" }),
@@ -27,11 +32,14 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 export default function UserAuthForm() {
-  const searchParams = useSearchParams();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { loginApiCall } = new UseAuth();
+
   const defaultValues = {
-    email: "demo@gmail.com",
-    password: "hello",
+    email: "",
+    password: "",
   };
   const form = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
@@ -39,7 +47,20 @@ export default function UserAuthForm() {
   });
 
   const onSubmit = async (data: UserFormValue) => {
-    console.log(data);
+    setLoading(true);
+    const response = await loginApiCall(data);
+    if (response) {
+      const { token, ...userData } = response.result;
+      dispatch(
+        setLogin({
+          token,
+          userData,
+        })
+      );
+      toast.success("Successfully login.");
+    }
+    router.push("/dashboard");
+    setLoading(false);
   };
 
   return (
@@ -85,7 +106,12 @@ export default function UserAuthForm() {
               </FormItem>
             )}
           />
-          <Button disabled={loading} className="ml-auto w-full" type="submit">
+          <Button
+            disabled={loading}
+            variant="primary"
+            className="ml-auto w-full"
+            type="submit"
+          >
             Submit
           </Button>
         </form>
@@ -96,7 +122,10 @@ export default function UserAuthForm() {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            You have not an account ? <Link href={"/signup"}>Register</Link>
+            You have not an account ?{" "}
+            <Link className="underline" href={"/signup"}>
+              Register
+            </Link>
           </span>
         </div>
       </div>
