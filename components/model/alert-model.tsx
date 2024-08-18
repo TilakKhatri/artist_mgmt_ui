@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import UserApis from "@/services/users-api";
+import ArtistApis from "@/services/artists-api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -30,11 +30,11 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 
   const mutation = useMutation({
     mutationFn: async (userId: number) => {
-      return new UserApis().deleteUserByIdApi(userId);
+      return new ArtistApis().deleteArtistByIdApi(userId);
     },
     onSuccess: () => {
-      toast.success("User deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("Artist deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["artists"] });
 
       onClose();
     },

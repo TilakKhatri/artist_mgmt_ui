@@ -140,7 +140,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: "Artist",
-    href: "/dashboard/Artist",
+    href: "/dashboard/artist",
     icon: "kanban",
     label: "artist",
   },

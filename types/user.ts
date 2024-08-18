@@ -1,13 +1,13 @@
-export interface IUser {
+export interface User {
   id: number;
   first_name: string;
   last_name: string;
   email: string;
   password: string;
-  gender: string;
-  address: string;
   phone: string;
-  token?: string;
+  address: string;
+  dob?: any;
+  gender: any;
 }
 
 export interface ApiResponse<T> {

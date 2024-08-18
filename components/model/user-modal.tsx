@@ -9,7 +9,7 @@ type Iprops = {
   data: User | null;
 };
 
-export default function AddNewUserModal({
+export default function UserModal({
   isOpen,
   toggleModal,
   clasName,

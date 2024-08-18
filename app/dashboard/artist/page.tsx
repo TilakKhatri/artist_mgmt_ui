@@ -1,11 +1,11 @@
 "use client";
 
-import UserApis from "@/services/users-api";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { UserClient } from "@/components/tables/user-table/user-table";
 import { useMemo } from "react";
+import { ArtistClient } from "@/components/tables/artist-table/table";
+import ArtistApis from "@/services/artists-api";
 
-export default function UserPage({ searchParams }: any) {
+export default function ArtistPage({ searchParams }: any) {
   // Extract page and limit from searchParams with default values
   const page = Number(searchParams.page) || 1;
   const pageLimit = Number(searchParams.limit) || 10;
@@ -15,15 +15,15 @@ export default function UserPage({ searchParams }: any) {
     [page, pageLimit]
   );
 
-  const { getUserssApi } = new UserApis();
+  const { getArtistsApi } = new ArtistApis();
 
   const {
-    data: users,
+    data: artists,
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["users", page, pageLimit],
-    queryFn: async () => await getUserssApi(query),
+    queryKey: ["artists", page, pageLimit],
+    queryFn: async () => await getArtistsApi(query),
     placeholderData: keepPreviousData,
   });
 
@@ -33,7 +33,7 @@ export default function UserPage({ searchParams }: any) {
   return (
     <div>
       <div className="space-y-2">
-        <UserClient data={users} />
+        <ArtistClient data={artists} />
       </div>
     </div>
   );

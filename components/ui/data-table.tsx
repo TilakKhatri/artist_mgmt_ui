@@ -38,7 +38,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchKey: string;
   pageNo: number;
-  totalUsers: number;
+  totalArtists: number;
   pageSizeOptions?: number[];
   pageCount: number;
   searchParams?: {
@@ -51,7 +51,7 @@ export function DataTable<TData, TValue>({
   pageCount,
   pageNo,
   data,
-  totalUsers,
+  totalArtists,
   pageSizeOptions = [1, 2, 5, 10, 20, 30, 40, 50],
 }: DataTableProps<TData, TValue>) {
   const searchParams = useSearchParams();
@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
     <>
       <ScrollArea className="h-[calc(80vh-220px)] rounded-md border md:h-[calc(80dvh-200px)]">
         <Table className="relative">
-          <TableHeader>
+          <TableHeader className="bg-gray-200">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

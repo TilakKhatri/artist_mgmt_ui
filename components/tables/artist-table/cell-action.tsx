@@ -1,5 +1,5 @@
 "use client";
-import AddNewUserModal from "@/components/model/add-user-modal";
+import ArtistModal from "@/components/model/artist-model";
 import { AlertModal } from "@/components/model/alert-model";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,31 +9,32 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@/constants/data";
-import { setUser } from "@/redux/slices/user.slice";
-import { Edit, MoreHorizontal, Trash } from "lucide-react";
+
+import { Edit, MoreHorizontal, Trash, ViewIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { IArtist } from "@/types/artist";
+
 interface CellActionProps {
-  data: User;
+  data: IArtist;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [userData, setUserData] = useState<User | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
+  const [artistData, setArtistData] = useState<IArtist | null>(null);
+  const [artistId, setArtistId] = useState<number | null>(null);
 
   return (
     <>
-      {!!userId && (
+      {!!artistId && (
         <AlertModal
-          isOpen={!!userId}
-          onClose={() => setUserId(null)}
+          isOpen={!!artistId}
+          onClose={() => setArtistId(null)}
           loading={loading}
-          id={userId}
+          id={artistId}
         />
       )}
       <DropdownMenu modal={false}>
@@ -43,22 +44,26 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="p-2">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-          <DropdownMenuItem onClick={() => setUserData(data)}>
+          <DropdownMenuItem
+            onClick={() => router.push(`/dashboard/artist/${data.id}`)}
+          >
+            <ViewIcon className="mr-2 h-4 w-4" /> My Creation
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setArtistData(data)}>
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setUserId(data.id)}>
+          <DropdownMenuItem onClick={() => setArtistId(data.id)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {!!userData && (
-        <AddNewUserModal
-          isOpen={!!userData}
-          toggleModal={() => setUserData(null)}
-          data={userData}
+      {!!artistData && (
+        <ArtistModal
+          isOpen={!!artistData}
+          toggleModal={() => setArtistData(null)}
+          data={artistData}
           clasName="max-w-[80vw]"
         />
       )}

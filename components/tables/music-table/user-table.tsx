@@ -6,7 +6,7 @@ import { Separator } from "../../ui/separator";
 import { DataTable } from "../../ui/data-table";
 import { User } from "@/constants/data";
 import { useState } from "react";
-import AddNewUserModal from "@/components/model/add-user-modal";
+import UserModal from "@/components/model/user-modal";
 import { CellAction } from "./cell-action";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -18,7 +18,7 @@ interface IProps {
   users: [User];
 }
 
-export const UserClient = ({ data }: { data: IProps }) => {
+export const UserClient = ({ data }: { data: any }) => {
   const page = data.currentPage;
   const totalUsers = data.totalUsers;
   const pageCount = Math.ceil(totalUsers / data.limit);
@@ -29,31 +29,45 @@ export const UserClient = ({ data }: { data: IProps }) => {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: "first_name",
-      header: "firstname",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>FIRST NAME</div>
+      ),
     },
     {
       accessorKey: "last_name",
-      header: "lastname",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>LAST NAME</div>
+      ),
     },
     {
       accessorKey: "email",
-      header: "email",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>EMAIL</div>
+      ),
     },
     {
       accessorKey: "phone",
-      header: "phone",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>PHONE</div>
+      ),
     },
     {
       accessorKey: "address",
-      header: "address",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>ADDRESS</div>
+      ),
     },
     {
       accessorKey: "dob",
-      header: "dob",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>DOB</div>
+      ),
     },
     {
       accessorKey: "gender",
-      header: "gender",
+      header: () => (
+        <div style={{ fontWeight: "400", color: "black" }}>GENDER</div>
+      ),
     },
     {
       id: "actions",
@@ -82,7 +96,7 @@ export const UserClient = ({ data }: { data: IProps }) => {
         data={data.users}
       />
       {isModalOpen && (
-        <AddNewUserModal
+        <UserModal
           isOpen={isModalOpen}
           toggleModal={toggle}
           clasName="max-w-[80vw]"

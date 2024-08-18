@@ -1,4 +1,4 @@
-export interface Artist {
+export interface IArtist {
   id: number;
   name: string;
   address: string;
@@ -6,8 +6,8 @@ export interface Artist {
   no_of_album_release: number;
   dob: string;
   gender: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface RootArtistResponse {
@@ -18,7 +18,7 @@ export interface RootArtistResponse {
 }
 
 export interface ArtistResult {
-  artists: Artist[];
+  artists: IArtist[];
   currentPage: number;
   totalPages: number;
   totalArtists: number;
