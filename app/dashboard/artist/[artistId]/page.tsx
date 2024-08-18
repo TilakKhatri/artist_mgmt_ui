@@ -9,22 +9,19 @@ import ArtistApis from "@/services/artists-api";
 import { CalendarIcon, MapPinHouse, Slash } from "lucide-react";
 import { MusicClient } from "@/components/tables/music-table/table";
 
-import { usePathname } from "next/navigation";
-
 export default function ArtistDetailpage({
   params,
 }: {
   params: { artistId: number };
 }) {
   const { getArtistDetailApi } = new ArtistApis();
-  const path = usePathname();
-  console.log(path.split("/")[2]);
+
   const {
     data: artistDetail,
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["artists", params?.artistId],
+    queryKey: ["artists", params?.artistId, "music"],
     queryFn: async () => await getArtistDetailApi(params.artistId),
   });
 

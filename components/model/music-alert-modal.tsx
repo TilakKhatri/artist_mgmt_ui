@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import ArtistApis from "@/services/artists-api";
+import MusicApis from "@/services/music-api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -12,6 +12,7 @@ interface AlertModalProps {
   onClose: () => void;
   loading: boolean;
   id: number | null;
+  artistId: number | null;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
@@ -19,6 +20,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   onClose,
   loading,
   id,
+  artistId,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
@@ -29,12 +31,14 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   }, []);
 
   const mutation = useMutation({
-    mutationFn: async (artistId: number) => {
-      return new ArtistApis().deleteArtistByIdApi(artistId);
+    mutationFn: async (musicId: number) => {
+      return new MusicApis().deleteMusicByIdApi(musicId);
     },
     onSuccess: () => {
-      toast.success("Artist deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["artists"] });
+      toast.success("Music deleted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["artists", artistId, "music"],
+      });
 
       onClose();
     },
@@ -47,7 +51,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     return null;
   }
 
-  const handleDeleteArtist = () => {
+  const handleDeleteMusic = () => {
     if (id !== null) {
       mutation.mutate(id);
     }
@@ -71,7 +75,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         <Button
           disabled={loading || mutation?.isLoading}
           variant="destructive"
-          onClick={handleDeleteArtist}
+          onClick={handleDeleteMusic}
         >
           Continue
         </Button>

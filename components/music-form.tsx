@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -25,12 +25,13 @@ import {
   SelectValue,
 } from "./ui/select";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import ArtistApis from "@/services/artists-api";
+import MusicApis from "@/services/music-api";
 import toast from "react-hot-toast";
 import { IMusic } from "@/types/artist";
+import { usePathname } from "next/navigation";
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: "Please enter title  name" }),
+  title: z.string().min(10, { message: "Please enter title  name" }),
   album_name: z.string().min(5, { message: "Please enter album name" }),
   genre: z.enum(["rnb", "country", "classic", "rock", "jazz"], {
     errorMap: () => ({ message: "Please select a genre" }),
@@ -46,7 +47,9 @@ type Iprops = {
 };
 export default function MusicForm({ className, toggleModal, data }: Iprops) {
   const queryClient = useQueryClient();
+  const path = usePathname();
 
+  const artistId = useMemo(() => parseInt(path.split("/")[3], 10), [path]);
   const [loading, setLoading] = useState(false);
   const defaultValues = {
     title: "",
@@ -58,14 +61,16 @@ export default function MusicForm({ className, toggleModal, data }: Iprops) {
   });
 
   // Add User Mutation
-  const addArtistMutation = useMutation({
+  const addMusicMutation = useMutation({
     mutationFn: async (input: MusicFormValue) => {
-      return new ArtistApis().createArtistApi(input);
+      return new MusicApis().createMusicApi(artistId, input);
     },
     onSuccess: () => {
-      toast.success("Artist added successfully");
+      toast.success("Music added successfully");
       toggleModal();
-      queryClient.invalidateQueries({ queryKey: ["artists"] });
+      queryClient.invalidateQueries({
+        queryKey: ["artists", artistId, "music"],
+      });
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Failed to add artist");
@@ -73,16 +78,18 @@ export default function MusicForm({ className, toggleModal, data }: Iprops) {
   });
 
   // Edit User Mutation
-  const editArtistMutation = useMutation({
+  const editMusicMutation = useMutation({
     mutationFn: async (input: MusicFormValue) => {
       if (data?.id) {
-        return new ArtistApis().editArtistByIdApi(data.id, input);
+        return new MusicApis().editMusicByIdApi(data.id, artistId, input);
       }
     },
     onSuccess: () => {
-      toast.success("Artist updated successfully");
+      toast.success("Music updated successfully");
       toggleModal();
-      queryClient.invalidateQueries({ queryKey: ["artists"] });
+      queryClient.invalidateQueries({
+        queryKey: ["artists", artistId, "music"],
+      });
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Failed to update artist");
@@ -90,13 +97,13 @@ export default function MusicForm({ className, toggleModal, data }: Iprops) {
   });
 
   const onSubmit = async (input: MusicFormValue) => {
-    console.log(data);
     if (data) {
       // Edit operation
-      editArtistMutation.mutate(input);
+      // console.log({...data,artist_id:artistId});
+      editMusicMutation.mutate(input);
     } else {
       // Add new user operation
-      addArtistMutation.mutate(input);
+      addMusicMutation.mutate(input);
     }
   };
 

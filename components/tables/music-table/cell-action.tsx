@@ -1,5 +1,5 @@
 "use client";
-import { AlertModal } from "@/components/model/alert-modal";
+import { AlertModal } from "@/components/model/music-alert-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 import { IMusic } from "@/types/artist";
 import MusicModal from "@/components/model/music-modal";
 
@@ -20,12 +20,15 @@ interface CellActionProps {
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+  const path = usePathname();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [musicInfo, setMusicInfo] = useState<IMusic | null>(null);
   const [musicId, setMusicId] = useState<number | null>(null);
 
+  const artistId = useMemo(() => parseInt(path.split("/")[3], 10), [path]);
+  console.log(artistId);
   return (
     <>
       {!!musicId && (
@@ -33,7 +36,8 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           isOpen={!!musicId}
           onClose={() => setMusicId(null)}
           loading={loading}
-          id={musicId}
+          id={data.id}
+          artistId={artistId}
         />
       )}
       <DropdownMenu modal={false}>

@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import ArtistApis from "@/services/artists-api";
+import UserApis from "@/services/users-api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -29,12 +29,12 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   }, []);
 
   const mutation = useMutation({
-    mutationFn: async (artistId: number) => {
-      return new ArtistApis().deleteArtistByIdApi(artistId);
+    mutationFn: async (userId: number) => {
+      return new UserApis().deleteUserByIdApi(userId);
     },
     onSuccess: () => {
-      toast.success("Artist deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["artists"] });
+      toast.success("User deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
 
       onClose();
     },
@@ -47,7 +47,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     return null;
   }
 
-  const handleDeleteArtist = () => {
+  const handleDeleteUser = () => {
     if (id !== null) {
       mutation.mutate(id);
     }
@@ -71,7 +71,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         <Button
           disabled={loading || mutation?.isLoading}
           variant="destructive"
-          onClick={handleDeleteArtist}
+          onClick={handleDeleteUser}
         >
           Continue
         </Button>

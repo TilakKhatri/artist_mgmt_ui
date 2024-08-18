@@ -4,6 +4,7 @@ import { Modal } from "../ui/modal";
 import MusicForm from "../music-form";
 
 type Iprops = {
+  artistId?: number;
   isOpen: boolean;
   toggleModal: () => void;
   clasName?: string;
@@ -11,6 +12,7 @@ type Iprops = {
 };
 
 export default function MusicModal({
+  artistId,
   isOpen,
   toggleModal,
   clasName,
@@ -30,7 +32,12 @@ export default function MusicModal({
         ></div>
       </div>
 
-      <MusicForm className="mt-4" toggleModal={toggleModal} data={data} />
+      <MusicForm
+        className="mt-4"
+        toggleModal={toggleModal}
+        id={artistId}
+        data={data}
+      />
     </Modal>
   );
 }

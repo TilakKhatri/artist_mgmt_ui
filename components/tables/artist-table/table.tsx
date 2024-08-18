@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, ImportIcon, FileSpreadsheet } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "../../ui/button";
@@ -75,13 +75,27 @@ export const ArtistClient = ({ data }: { data: IProps }) => {
 
   return (
     <>
-      <div className="flex items-start justify-end mt-12">
+      <div className="flex items-start justify-end mt-12 space-x-2">
         <Button
-          variant="primary"
+          variant="outline"
           className="text-xs md:text-sm"
           onClick={() => toggle()}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
+        </Button>
+        <Button
+          variant="secondary"
+          className="text-xs md:text-sm"
+          // onClick={() => toggle()}
+        >
+          <ImportIcon className="mr-2 h-4 w-4" /> Import
+        </Button>
+        <Button
+          variant="primary"
+          className="text-xs md:text-sm"
+          // onClick={() => toggle()}
+        >
+          <FileSpreadsheet className="mr-2 h-4 w-4" /> Export
         </Button>
       </div>
       <Separator />

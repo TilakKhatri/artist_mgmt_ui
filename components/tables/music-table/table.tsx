@@ -106,6 +106,7 @@ export const MusicClient = ({ data }: { data: IProps }) => {
       />
       {isModalOpen && (
         <MusicModal
+          artistId={data.artist?.id}
           isOpen={isModalOpen}
           toggleModal={toggle}
           clasName="max-w-[80vw]"
