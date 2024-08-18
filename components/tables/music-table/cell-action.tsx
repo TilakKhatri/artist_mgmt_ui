@@ -1,6 +1,5 @@
 "use client";
-import UserModal from "@/components/model/user-modal";
-import { AlertModal } from "@/components/model/alert-model";
+import { AlertModal } from "@/components/model/alert-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,31 +8,32 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@/constants/data";
-import { setUser } from "@/redux/slices/user.slice";
+
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { IMusic } from "@/types/artist";
+import MusicModal from "@/components/model/music-modal";
 
 interface CellActionProps {
-  data: User;
+  data: IMusic;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [userData, setUserData] = useState<User | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
+  const [musicInfo, setMusicInfo] = useState<IMusic | null>(null);
+  const [musicId, setMusicId] = useState<number | null>(null);
 
   return (
     <>
-      {!!userId && (
+      {!!musicId && (
         <AlertModal
-          isOpen={!!userId}
-          onClose={() => setUserId(null)}
+          isOpen={!!musicId}
+          onClose={() => setMusicId(null)}
           loading={loading}
-          id={userId}
+          id={musicId}
         />
       )}
       <DropdownMenu modal={false}>
@@ -46,19 +46,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => setUserData(data)}>
+          <DropdownMenuItem onClick={() => setMusicInfo(data)}>
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setUserId(data.id)}>
+          <DropdownMenuItem onClick={() => setMusicId(data.id)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {!!userData && (
-        <UserModal
-          isOpen={!!userData}
-          toggleModal={() => setUserData(null)}
-          data={userData}
+      {!!musicInfo && (
+        <MusicModal
+          isOpen={!!musicInfo}
+          toggleModal={() => setMusicInfo(null)}
+          data={musicInfo}
           clasName="max-w-[80vw]"
         />
       )}

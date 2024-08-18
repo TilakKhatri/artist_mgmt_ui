@@ -1,6 +1,7 @@
 import { User } from "@/types/user";
-import AddUserForm from "../add-user-form";
+
 import { Modal } from "../ui/modal";
+import MusicForm from "../music-form";
 
 type Iprops = {
   isOpen: boolean;
@@ -9,7 +10,7 @@ type Iprops = {
   data: User | null;
 };
 
-export default function UserModal({
+export default function MusicModal({
   isOpen,
   toggleModal,
   clasName,
@@ -17,7 +18,7 @@ export default function UserModal({
 }: Iprops) {
   return (
     <Modal
-      title={!data ? "Add New User" : "Update user details "}
+      title={!data ? "Add New Music" : "Update Music Details "}
       description=""
       isOpen={isOpen}
       onClose={toggleModal}
@@ -28,7 +29,8 @@ export default function UserModal({
           className="p-1 rounded-full h-fit cursor-pointer bg-neutral-50"
         ></div>
       </div>
-      {/* <AddUserForm className="mt-4" toggleModal={toggleModal} data={data} /> */}
+
+      <MusicForm className="mt-4" toggleModal={toggleModal} data={data} />
     </Modal>
   );
 }

@@ -46,3 +46,10 @@ export interface ArtistDetail {
   created_at: string;
   updated_at: string;
 }
+
+export interface IMusic {
+  id: number;
+  title: string;
+  album_name: string;
+  genre: string;
+}

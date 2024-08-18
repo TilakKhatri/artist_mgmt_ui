@@ -1,6 +1,6 @@
 "use client";
-import ArtistModal from "@/components/model/artist-model";
-import { AlertModal } from "@/components/model/alert-model";
+import ArtistModal from "@/components/model/artist-modal";
+import { AlertModal } from "@/components/model/alert-modal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

@@ -10,7 +10,7 @@ import { DataTable } from "../../ui/data-table";
 
 import { CellAction } from "./cell-action";
 import { IArtist } from "@/types/artist";
-import ArtistModel from "@/components/model/artist-model";
+import ArtistModel from "@/components/model/artist-modal";
 
 interface IProps {
   currentPage: number;
