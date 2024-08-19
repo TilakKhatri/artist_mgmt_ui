@@ -149,7 +149,7 @@ export default function AddUserForm({ className, toggleModal, data }: Iprops) {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your first name"
+                      placeholder="Enter your last name"
                       disabled={loading}
                       {...field}
                     />
