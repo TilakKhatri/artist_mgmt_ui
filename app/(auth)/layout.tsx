@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 export default function RootLayout({
@@ -10,12 +11,19 @@ export default function RootLayout({
 }) {
   const router = useRouter();
   const { loginStatus } = useSelector((state: any) => state.user);
+  // console.log(loginStatus);
   if (loginStatus) {
     router.push(`/dashboard`);
   }
+  if (!loginStatus) {
+    router.push("/");
+  }
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Toaster position="top-center" reverseOrder={false} />
+        {children}
+      </body>
     </html>
   );
 }

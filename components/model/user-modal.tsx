@@ -28,7 +28,7 @@ export default function UserModal({
           className="p-1 rounded-full h-fit cursor-pointer bg-neutral-50"
         ></div>
       </div>
-      {/* <AddUserForm className="mt-4" toggleModal={toggleModal} data={data} /> */}
+      <AddUserForm className="mt-4" toggleModal={toggleModal} data={data} />
     </Modal>
   );
 }

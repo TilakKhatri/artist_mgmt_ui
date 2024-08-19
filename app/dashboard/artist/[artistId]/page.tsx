@@ -28,7 +28,6 @@ export default function ArtistDetailpage({
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   return (
-    // <ScrollArea>
     <section className="relative flex flex-col pt-40 pb-24 mt-8 overflow-auto md:overflow-scroll h-screen">
       <Image
         src="https://pagedone.io/asset/uploads/1705473908.png"

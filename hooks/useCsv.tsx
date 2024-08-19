@@ -32,12 +32,14 @@ class useCsvOperation {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Response: ", response);
+      console.log("Response from file: ", response);
       return response.data;
     } catch (error: any) {
+      console.log("I am here");
       //   console.log("I got error during file upload");
-      //   console.log(error?.message);
-      toast.error(error?.message);
+      console.log(error?.response?.data?.message);
+      // toast.error();
+      throw new Error(error?.response?.data.message);
     }
   };
 }

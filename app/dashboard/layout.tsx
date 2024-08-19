@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 
 import Header from "@/components/layout/header";
 import Sidebar from "@/components/layout/sidebar";
-// import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Metadata } from "next";
 import { useSelector } from "react-redux";
 
 export default function DashboardLayout({
@@ -14,7 +12,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { user, loginStatus } = useSelector((state: any) => state.user);
+  const { loginStatus } = useSelector((state: any) => state.user);
+  console.log(
+    "layout dashboard",
+    useSelector((state: any) => state.user)
+  );
   if (!loginStatus) {
     router.push(`/`);
   }

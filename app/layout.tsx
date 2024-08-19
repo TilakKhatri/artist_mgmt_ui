@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-
-import NextTopLoader from "nextjs-toploader";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -24,8 +22,6 @@ export default async function RootLayout({
         className={`${inter.className} overflow-hidden `}
         suppressHydrationWarning={true}
       >
-        {/* <NextTopLoader showSpinner={false} /> */}
-
         <GlobalProvider>{children}</GlobalProvider>
       </body>
     </html>

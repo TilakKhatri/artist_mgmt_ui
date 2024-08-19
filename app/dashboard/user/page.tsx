@@ -4,6 +4,7 @@ import UserApis from "@/services/users-api";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { UserClient } from "@/components/tables/user-table/user-table";
 import { useMemo } from "react";
+import Load from "@/components/ui/loading";
 
 export default function UserPage({ searchParams }: any) {
   // Extract page and limit from searchParams with default values
@@ -27,8 +28,8 @@ export default function UserPage({ searchParams }: any) {
     placeholderData: keepPreviousData,
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading) return <Load />;
+  if (error) return new Error(error.message);
 
   return (
     <div>

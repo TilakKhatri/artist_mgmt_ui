@@ -93,15 +93,16 @@ export const ArtistClient = ({ data }: { data: IProps }) => {
   }
 
   const addArtistMutation = useMutation({
-    mutationFn: async (input: any) => {
-      return importCsv(input);
-    },
+    mutationFn: async (input: any) => await importCsv(input),
     onSuccess: () => {
-      toast.success("Artist added successfully");
+      toast.success("Artist imported successfully");
       queryClient.invalidateQueries({ queryKey: ["artists"] });
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to add artist");
+      console.log(error?.message);
+      toast.error(
+        error?.message || "Failed to import artist due to invalid format"
+      );
     },
   });
 

@@ -12,17 +12,19 @@ class UseAuth {
     } catch (error: any) {
       console.log(error?.response?.data.message);
       toast.error(error?.response?.data.message);
+      return;
     }
   };
 
   registerApiCall = async (payload: RegisterPayload) => {
     try {
       const res = await http.post("/auth/register", payload);
-      console.log(res);
+      // console.log(res);
       return res?.data;
     } catch (error: any) {
       console.log(error?.response?.data.message);
       toast.error(error?.response?.data.message);
+      return;
     }
   };
 }

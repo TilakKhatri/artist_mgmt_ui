@@ -48,20 +48,26 @@ export default function UserAuthForm() {
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
-    const response = await loginApiCall(data);
-    if (response) {
-      const { token, ...userData } = response.result;
-      dispatch(
-        setLogin({
-          token,
-          userData,
-        })
-      );
-      toast.success("Successfully login.");
+    try {
+      const response = await loginApiCall(data);
+      if (response) {
+        const { token, ...userData } = response.result;
+        dispatch(
+          setLogin({
+            token,
+            userData,
+          })
+        );
+        toast.success("Successfully logged in.");
+        router.push("/dashboard");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    router.push("/dashboard");
-    setLoading(false);
-    router.refresh();
   };
 
   return (
@@ -69,7 +75,7 @@ export default function UserAuthForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-2"
+          className="w-full space-y-4"
         >
           <FormField
             control={form.control}
@@ -98,7 +104,7 @@ export default function UserAuthForm() {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="Enter your passowrd..."
+                    placeholder="Enter your password..."
                     disabled={loading}
                     {...field}
                   />
@@ -123,7 +129,7 @@ export default function UserAuthForm() {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            You have not an account ?{" "}
+            You have not an account?{" "}
             <Link className="underline" href={"/signup"}>
               Register
             </Link>

@@ -3,9 +3,10 @@ import Link from "next/link";
 import UserLoginForm from "@/components/forms/login-form";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { AudioWaveform } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Authentication",
+  title: "Login Page",
   description: "Authentication forms built using the components.",
 };
 
@@ -21,12 +22,19 @@ export default function AuthenticationPage() {
       >
         Login
       </Link>
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-        <div className="absolute inset-0 bg-zinc-900" />
+      <div className="relative hidden h-full flex-col bg-muted p-10 bg-zinc-900 text-white lg:flex dark:border-r">
         <div className="relative z-20 flex items-center text-lg font-medium">
-          Logo
+          <AudioWaveform width={24} height={24} />
         </div>
-        <div className="relative z-20 mt-auto"></div>
+        <div className="h-full flex flex-col justify-center items-center">
+          <h1 className="text-4xl font-bold text-white">
+            Welcome to Artist Management System
+          </h1>
+          <p className="text-lg text-white font-semibold mt-4">
+            Easy to manage with one click
+          </p>
+        </div>
+        <div className="relative z-20 mt-auto">All reserved @Tilak Khatri </div>
       </div>
       <div className="flex h-full items-center p-4 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">

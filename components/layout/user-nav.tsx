@@ -17,7 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 export function UserNav() {
   const router = useRouter();
-  const { user } = useSelector((state: any) => state.user);
+  const { user, loginStatus } = useSelector((state: any) => state.user);
+  console.log(user, loginStatus);
   const dispatch = useDispatch();
   function signOut() {
     dispatch(resetLogin());
@@ -32,7 +33,7 @@ export function UserNav() {
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>{user?.username}</AvatarFallback>
+              <AvatarFallback>{user?.username || "Admin"}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>

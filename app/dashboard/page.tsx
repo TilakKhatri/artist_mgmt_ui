@@ -1,19 +1,24 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Load from "@/components/ui/loading";
 import { getAnalyticData } from "@/services/analytics-api";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { ActivityIcon, LucideMicVocal, UsersIcon } from "lucide-react";
+import {
+  ActivityIcon,
+  LucideMicVocal,
+  UsersIcon,
+  MusicIcon,
+} from "lucide-react";
 
 export default function DashboardPage() {
   const { error, data, isLoading } = useQuery({
     queryKey: ["analytics"],
     queryFn: async () => await getAnalyticData(),
-    placeholderData: keepPreviousData,
   });
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  console.log(error, data, isLoading);
+  if (isLoading) return <Load />;
+  if (error) return new Error(error.message);
 
   return (
     <div className="flex flex-col space-y-8">
@@ -46,7 +51,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Musics</CardTitle>
-            <LucideMicVocal width={20} height={20} />
+            <MusicIcon width={20} height={20} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data?.music_count}</div>

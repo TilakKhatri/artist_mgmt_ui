@@ -52,10 +52,9 @@ export default function UserRegistrationForm() {
     if (response) {
       console.log("Registered successfully:", response);
       toast.success("Account created successfully");
+      router.push("/");
     }
-    router.push("/");
     setLoading(false);
-    router.refresh();
   };
 
   return (
@@ -63,7 +62,7 @@ export default function UserRegistrationForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-2"
+          className="w-full space-y-4"
         >
           <FormField
             control={form.control}
@@ -135,7 +134,10 @@ export default function UserRegistrationForm() {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            You have an account ? <Link href={"/"}>Login</Link>
+            You have an account ?{" "}
+            <Link href={"/"} className="underline">
+              Login
+            </Link>
           </span>
         </div>
       </div>
