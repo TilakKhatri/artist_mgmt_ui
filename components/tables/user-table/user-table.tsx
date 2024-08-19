@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Plus, Slash } from "lucide-react";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
 import { DataTable } from "../../ui/data-table";
@@ -9,6 +9,14 @@ import { useState } from "react";
 import UserModal from "@/components/model/user-modal";
 import { CellAction } from "./cell-action";
 import { ColumnDef } from "@tanstack/react-table";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface IProps {
   currentPage: number;
@@ -77,7 +85,23 @@ export const UserClient = ({ data }: { data: IProps }) => {
 
   return (
     <>
-      <div className="flex items-start justify-end mt-12">
+      <div className="flex items-center justify-between mt-12 mb-4">
+        <div>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
+
+              <BreadcrumbSeparator>
+                <Slash />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Users</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
         <Button
           variant="primary"
           className="text-xs md:text-sm"

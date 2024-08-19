@@ -69,7 +69,7 @@ export default function MusicForm({ className, toggleModal, data }: Iprops) {
       toast.success("Music added successfully");
       toggleModal();
       queryClient.invalidateQueries({
-        queryKey: ["artists", artistId, "music"],
+        queryKey: ["music"],
       });
     },
     onError: (error: any) => {
@@ -88,7 +88,7 @@ export default function MusicForm({ className, toggleModal, data }: Iprops) {
       toast.success("Music updated successfully");
       toggleModal();
       queryClient.invalidateQueries({
-        queryKey: ["artists", artistId, "music"],
+        queryKey: ["music"],
       });
     },
     onError: (error: any) => {

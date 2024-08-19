@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, ImportIcon, FileSpreadsheet } from "lucide-react";
+import { Plus, ImportIcon, FileSpreadsheet, Slash } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button, buttonVariants } from "../../ui/button";
@@ -15,6 +15,14 @@ import useCsvOperation from "@/hooks/useCsv";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface IProps {
   currentPage: number;
@@ -114,33 +122,51 @@ export const ArtistClient = ({ data }: { data: IProps }) => {
 
   return (
     <>
-      <div className="flex items-start justify-end mt-12 space-x-2">
-        <Button
-          variant="outline"
-          className="text-xs md:text-sm"
-          onClick={() => toggle()}
-        >
-          <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button>
+      <div className="flex items-center justify-between mt-12 space-x-2">
+        <div>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
 
-        <label className="flex items-center cursor-pointer bg-gray-100 hover:bg-gray-200 text-black rounded-lg py-2 px-4">
-          <ImportIcon className="mr-2 h-4 w-4" />
-          <input
-            type="file"
-            accept=".csv"
-            className="hidden"
-            onChange={handleImportCsv}
-          />
-          Import
-        </label>
+              <BreadcrumbSeparator>
+                <Slash />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Artists</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <div className="flex space-x-2">
+          <Button
+            variant="outline"
+            className="text-xs md:text-sm"
+            onClick={() => toggle()}
+          >
+            <Plus className="mr-2 h-4 w-4" /> Add New
+          </Button>
 
-        <Button
-          variant="primary"
-          className="text-xs md:text-sm"
-          onClick={handleExportCsv}
-        >
-          <FileSpreadsheet className="mr-2 h-4 w-4" /> Export
-        </Button>
+          <label className="flex items-center cursor-pointer bg-gray-100 hover:bg-gray-200 text-black rounded-lg py-2 px-4">
+            <ImportIcon className="mr-2 h-4 w-4" />
+            <input
+              type="file"
+              accept=".csv"
+              className="hidden"
+              onChange={handleImportCsv}
+            />
+            Import
+          </label>
+
+          <Button
+            variant="primary"
+            className="text-xs md:text-sm"
+            onClick={handleExportCsv}
+          >
+            <FileSpreadsheet className="mr-2 h-4 w-4" /> Export
+          </Button>
+        </div>
       </div>
       <Separator />
       <DataTable

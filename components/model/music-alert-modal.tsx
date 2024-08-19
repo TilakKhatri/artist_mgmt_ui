@@ -37,7 +37,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     onSuccess: () => {
       toast.success("Music deleted successfully");
       queryClient.invalidateQueries({
-        queryKey: ["artists", artistId, "music"],
+        queryKey: ["music"],
       });
 
       onClose();

@@ -21,7 +21,7 @@ export default function ArtistDetailpage({
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["artists", params?.artistId, "music"],
+    queryKey: ["music"],
     queryFn: async () => await getArtistDetailApi(params.artistId),
   });
 

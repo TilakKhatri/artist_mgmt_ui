@@ -28,7 +28,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [musicId, setMusicId] = useState<number | null>(null);
 
   const artistId = useMemo(() => parseInt(path.split("/")[3], 10), [path]);
-  console.log(artistId);
+  // console.log(artistId);
   return (
     <>
       {!!musicId && (
